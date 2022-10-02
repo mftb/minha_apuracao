@@ -1,9 +1,9 @@
 import pandas as pd
 import requests
 
-response = requests.get(
-    "https://resultados.tse.jus.br/oficial/ele2022/544/dados-simplificados/br/br-c0001-e000544-r.json"
-)
+DATA_URL = "https://resultados.tse.jus.br/oficial/ele2022/544/dados-simplificados/br/br-c0001-e000544-r.json"
+
+response = requests.get(DATA_URL)
 json_data = response.json()
 
 candidato = []
