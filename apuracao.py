@@ -1,3 +1,4 @@
+import os
 import time
 
 import pandas as pd
@@ -13,10 +14,14 @@ def tse():
     return response.json()
 
 def apuracao(resultados):
+    print(f"Apurados: {resultados['psi']}%")
+
     candidato = []
     partido = []
     votos = []
     porcentagem = []
+
+
 
     for info in resultados["cand"]:
         candidato.append(info["nm"])
@@ -32,10 +37,11 @@ def apuracao(resultados):
 
 def main():
     while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
         resultados = tse()
-        apuracao = apuracao(resultados)
-        print(apuracao)
-        time.sleep(30000)
+        apura = apuracao(resultados)
+        print(apura)
+        time.sleep(5)
 
 
 if __name__ == "__main__":
