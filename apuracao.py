@@ -10,9 +10,14 @@ DATA_URL = "https://resultados.tse.jus.br/oficial/ele2022/544/dados-simplificado
 
 def tse():
     """Puxa os dados do TSE."""
-    response = requests.get(DATA_URL)
-    return response.json()
-
+    tentativas = 0
+    while tentativas < 5:
+        try:
+            response = requests.get(DATA_URL)
+            return response.json()
+        except:
+            tentativas += 1
+            time.sleep(2**tentativas)
 
 def apuracao(resultados):
     """Formata os dados extraídos."""
