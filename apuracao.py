@@ -1,22 +1,42 @@
+import time
+
 import pandas as pd
 import requests
 
 DATA_URL = "https://resultados.tse.jus.br/oficial/ele2022/544/dados-simplificados/br/br-c0001-e000544-r.json"
 
 response = requests.get(DATA_URL)
-json_data = response.json()
+resultados = response.json()
 
-candidato = []
-partido = []
-votos = []
-porcentagem = []
+def tse():
+    response = requests.get(DATA_URL)
+    return response.json()
 
-for info in json_data["cand"]:
-    candidato.append(info["nm"])
-    partido.append(info["cc"].split(" ")[0])
-    votos.append(info["vap"])
-    porcentagem.append(info["pvap"])
+def apuracao(resultados):
+    candidato = []
+    partido = []
+    votos = []
+    porcentagem = []
 
-df_eleicao = pd.DataFrame(list(zip(candidato, partido, votos, porcentagem)), columns=("Candidato", "Partido", "Votos", "Percentual"))
+    for info in resultados["cand"]:
+        candidato.append(info["nm"])
+        partido.append(info["cc"].split(" ")[0])
+        votos.append(info["vap"])
+        porcentagem.append(info["pvap"])
 
-print(df_eleicao)
+    return pd.DataFrame(
+        list(zip(candidato, partido, votos, porcentagem)),
+        columns=("Candidato", "Partido", "Votos", "Percentual"),
+    )
+
+
+def main():
+    while True:
+        resultados = tse()
+        apuracao = apuracao(resultados)
+        print(apuracao)
+        time.sleep(30000)
+
+
+if __name__ == "__main__":
+    main()
